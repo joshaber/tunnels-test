@@ -2,23 +2,19 @@
 
 To reproduce hang:
 
-1. `yarn`
-1. Run `gh api /user/codespaces/$CODESPACE_NAME?internal=1 | jq .connection.tunnelProperties > tunnel.json`
-1. Run `yarn server`
-1. Open another terminal and run the test a number of times: `for i in {1..10}; do yarn start; done`
-1. These will fail after the first run with `Error: Port 3000->3000 is already in the collection.`
-    - _Should_ this fail? It doesn't seem like it.
-1. Comment out the `refreshPorts` call after deleting the existing port (search for "Comment these lines out")
-1. Run the test a number of times again: `for i in {1..10}; do yarn start; done`
-1. See `refreshPorts` hang waiting for a response:
-
-```
-> Relay client connected
->> Relay client: Receiving #7 SessionRequestMessage (requestType=tcpip-forward)
->> Relay client: Sending #7 PortForwardSuccessMessage (port=3000)
-> Port already exists
-> Port deleted
-> Created port ...
-> Refreshing ports...
->> Relay client: Sending #8 SessionRequestMessage (requestType=RefreshPorts)
-```
+1. Create a codespace from this repository
+1. Run `./run.sh`. This will run the client test 3 times, each time deleting and creating a port.
+1. The second run will call `refreshPorts` after deleting the existing port.
+    1. Note that this errors with `Error: Port 3000->3000 is already in the collection.` Should this error? It doesn't seem like it.
+1. The third run hangs on `refreshPorts` after creating the port:
+    ```
+    > Relay client connected
+    >> Relay client: Receiving #7 SessionRequestMessage (requestType=tcpip-forward)
+    >> Relay client: Sending #7 PortForwardSuccessMessage (port=3000)
+    > Port already exists
+    > Port deleted
+    > Created port [...]
+    > Refreshing ports...
+    >> Relay client: Sending #8 SessionRequestMessage (requestType=RefreshPorts)
+    ```
+1. If this succeeds just try running `./run.sh` again.

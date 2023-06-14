@@ -6,8 +6,7 @@
   "author": "Josh Abernathy <josh@github.com>",
   "license": "MIT",
   "scripts": {
-    "start": "yarn tsc && node ./out/index.js",
-    "server": "python -m http.server 3000"
+    "start": "yarn tsc && node ./out/index.js"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
