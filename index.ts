@@ -39,6 +39,8 @@ async function main() {
 
         await managementClient.deleteTunnelPort(tunnel, PORT);
         console.log('> Port deleted');
+
+        // Uncomment these lines:
         // console.log(`> Refreshing ports...`);
         // await relayClient.refreshPorts();
         // console.log(`> Refreshing ports done`);
