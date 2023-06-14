@@ -1,7 +1,5 @@
 # tunnels-test
 
-`yarn start` will delete the port if it exists or create it if not.
-
 To reproduce hang:
 
 1. Run `gh api /user/codespaces/$CODESPACE_NAME?internal=1 | jq .connection.tunnelProperties > tunnel.json`
