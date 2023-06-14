@@ -8,9 +8,12 @@ To reproduce hang:
 1. See `refreshPorts` hang waiting for a response:
 
 ```
-...
-> Refreshing ports...
->> Relay client: Sending #7 SessionRequestMessage (requestType=RefreshPorts)
+> Relay client connected
 >> Relay client: Receiving #7 SessionRequestMessage (requestType=tcpip-forward)
->> Relay client: Sending #8 PortForwardSuccessMessage (port=3000)
+>> Relay client: Sending #7 PortForwardSuccessMessage (port=3000)
+> Port already exists
+> Port deleted
+> Created port ...
+> Refreshing ports...
+>> Relay client: Sending #8 SessionRequestMessage (requestType=RefreshPorts)
 ```
