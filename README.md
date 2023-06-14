@@ -1,6 +1,6 @@
 # tunnels-test
 
-There are two surprising behavior:
+There are two surprising behaviors:
 1. Calling `refreshPorts` after deleting an existing ports throws with `Error: Port 3000->3000 is already in the collection.`. Is that intentional? Why?
 2. Calling `refreshPorts` can hang indefinitely waiting for a response.
 
