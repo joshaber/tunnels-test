@@ -40,13 +40,14 @@ async function main() {
         await managementClient.deleteTunnelPort(tunnel, PORT);
         console.log('> Port deleted');
 
-        // Uncomment these lines:
-        // console.log(`> Refreshing ports...`);
-        // await relayClient.refreshPorts();
-        // console.log(`> Refreshing ports done`);
+        // Comment these lines out
+        console.log(`> Refreshing ports after deleting existing port...`);
+        await relayClient.refreshPorts();
+        console.log(`> Refreshing ports done`);
+        // Comment these lines out
 
         const createdPort = await managementClient.createTunnelPort(tunnel, tunnelPort);
-      console.log('> Created port', createdPort);
+        console.log('> Created port', createdPort);
       } else {
         throw error;
       }
