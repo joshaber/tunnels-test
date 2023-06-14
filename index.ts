@@ -39,6 +39,9 @@ async function main() {
 
         await managementClient.deleteTunnelPort(tunnel, PORT);
         console.log('> Port deleted');
+        // console.log(`> Refreshing ports...`);
+        // await relayClient.refreshPorts();
+        // console.log(`> Refreshing ports done`);
 
         const createdPort = await managementClient.createTunnelPort(tunnel, tunnelPort);
       console.log('> Created port', createdPort);
@@ -53,6 +56,8 @@ async function main() {
   console.log(`> Refreshing ports...`);
   await relayClient.refreshPorts();
   console.log(`> Refreshing ports done`);
+
+  process.exit(0);
 }
 
 async function connectRelayClient(tunnel: Tunnel, managementClient: TunnelManagementHttpClient) {
