@@ -1,6 +1,6 @@
 # tunnels-test
 
-Bug: creating, deleting, and then recreating a port makes TunnelClient throw.
+Bug: creating, deleting, and then recreating a port makes TunnelClient throw when `acceptLocalConnectionsForForwardedPorts = false`, because we never remove the deleted port from `remoteForwardedPorts` in `portForwardingService`.
 
 To reproduce:
 
