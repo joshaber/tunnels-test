@@ -21,6 +21,19 @@ async function main() {
       [TunnelAccessScopes.ManagePorts]: tunnelInfo.managePortsAccessToken,
     },
   };
+
+  console.log('> Trying to delete existing port to get us to a clean slate...')
+  try {
+    await managementClient.deleteTunnelPort(tunnel, PORT);
+    console.log('> Port deleted');
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      console.log(`> Port didn't exist yet`)
+    } else {
+      throw error;
+    }
+  }
+
   const relayClient = await connectRelayClient(tunnel, managementClient);
 
   const tunnelPort: TunnelPort = {
@@ -28,37 +41,22 @@ async function main() {
     protocol: TunnelProtocol.Http,
   };
 
-  try {
-    const createdPort = await managementClient.createTunnelPort(tunnel, tunnelPort);
-    console.log('> Created port', createdPort);
-  } catch (error: any) {
-    if (error.response) {
-      const axiosError = error as AxiosError
-      if (axiosError.response?.status == 409) {
-        console.log('> Port already exists');
-
-        await managementClient.deleteTunnelPort(tunnel, PORT);
-        console.log('> Port deleted');
-
-        if (process.env.REFRESH_PORTS_AFTER_DELETE) {
-          console.log(`> Refreshing ports after deleting existing port...`);
-          await relayClient.refreshPorts();
-          console.log(`> Refreshing ports done`);
-        }
-
-        const createdPort = await managementClient.createTunnelPort(tunnel, tunnelPort);
-        console.log('> Created port', createdPort);
-      } else {
-        throw error;
-      }
-    } else {
-      throw error;
-    }
-  }
-
-  console.log(`> Refreshing ports...`);
+  console.log('> Creating port...');
+  const createdPort1 = await managementClient.createTunnelPort(tunnel, tunnelPort);
   await relayClient.refreshPorts();
-  console.log(`> Refreshing ports done`);
+  await relayClient.waitForForwardedPort(PORT);
+  console.log('> Created port', createdPort1);
+
+  console.log('> Deleting port...');
+  await managementClient.deleteTunnelPort(tunnel, PORT);
+  await relayClient.refreshPorts();
+  console.log('> Port deleted');
+
+  console.log('> Creating port again...');
+  const createdPort2 = await managementClient.createTunnelPort(tunnel, tunnelPort);
+  await relayClient.refreshPorts();
+  await relayClient.waitForForwardedPort(PORT);
+  console.log('> Created port', createdPort2);
 
   process.exit(0);
 }

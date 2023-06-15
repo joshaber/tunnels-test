@@ -1,24 +1,21 @@
 # tunnels-test
 
-There are two surprising behaviors:
-1. Calling `refreshPorts` after deleting an existing ports throws with `Error: Port 3000->3000 is already in the collection.`. Is that intentional? Why?
-2. Calling `refreshPorts` can hang indefinitely waiting for a response.
+Bug: creating, deleting, and then recreating a port makes TunnelClient throw.
 
 To reproduce:
 
 1. Create a codespace from this repository
-1. Run `./run.sh`. This will run the client test 3 times, each time deleting and creating a port.
-1. The second run will call `refreshPorts` after deleting the existing port.
-    1. Note that this errors with `Error: Port 3000->3000 is already in the collection.`
-1. The third run hangs on `refreshPorts` after creating the port:
+1. `yarn && gh api /user/codespaces/$CODESPACE_NAME?internal=1 | jq .connection.tunnelProperties > tunnel.json`
+1. `yarn start`
+1. Recreating the port will fail:
     ```
-    > Relay client connected
-    >> Relay client: Receiving #7 SessionRequestMessage (requestType=tcpip-forward)
-    >> Relay client: Sending #7 PortForwardSuccessMessage (port=3000)
-    > Port already exists
-    > Port deleted
-    > Created port [...]
-    > Refreshing ports...
-    >> Relay client: Sending #8 SessionRequestMessage (requestType=RefreshPorts)
+    !> Error: Error handling SessionRequestMessage (requestType=tcpip-forward): Port 3000->3000 is already in the collection. Error: Port 3000->3000 is already in the collection.
+        at ForwardedPortsCollection.addPort (/workspaces/tunnels-test/node_modules/@microsoft/dev-tunnels-ssh-tcp/events/forwardedPortsCollection.js:93:19)
+        at PortForwardingService.onSessionRequest (/workspaces/tunnels-test/node_modules/@microsoft/dev-tunnels-ssh-tcp/services/portForwardingService.js:422:39)
+        at async SshClientSession.handleRequestMessage (/workspaces/tunnels-test/node_modules/@microsoft/dev-tunnels-ssh/sshSession.js:470:17)
+        at async SshClientSession.processMessages (/workspaces/tunnels-test/node_modules/@microsoft/dev-tunnels-ssh/sshSession.js:303:17)
+    >> Relay client: SshClientSession Close(protocolError, "Port 3000->3000 is already in the collection.")
+    >> Relay client: Sending #11 DisconnectMessage (protocolError: Port 3000->3000 is already in the collection.)
+    /workspaces/tunnels-test/node_modules/@microsoft/dev-tunnels-ssh/sshSession.js:848
+                : new errors_1.SshConnectionError('Session disposed.');
     ```
-1. If this succeeds just try running `./run.sh` again.
