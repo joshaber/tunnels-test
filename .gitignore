@@ -1,3 +1,5 @@
 node_modules/
 tunnel.json
 out/
+host/bin/
+host/obj/

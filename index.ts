@@ -58,6 +58,8 @@ async function run() {
   console.log('> Refresh ports...');
   await relayClient.refreshPorts();
   console.log('> Port deleted');
+
+  // await relayClient.dispose();
 }
 
 async function wait(ms: number): Promise<void> {
@@ -93,9 +95,10 @@ async function connectRelayClient(tunnel: Tunnel, managementClient: TunnelManage
 }
 
 async function main() {
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 7; i++) {
     console.log(`### RUN ${i} ###`)
     await run();
+    await wait(1000);
   }
 
   process.exit(0)

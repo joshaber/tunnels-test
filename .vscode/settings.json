@@ -1,3 +1,4 @@
 {
-  "debug.javascript.unmapMissingSources": true
+  "debug.javascript.unmapMissingSources": true,
+  "dotnet.defaultSolution": "host/host.sln"
 }
