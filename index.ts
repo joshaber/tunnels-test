@@ -10,7 +10,7 @@ const PORT = 3000;
 const data = fs.readFileSync('tunnel.json')
 const tunnelInfo = JSON.parse(data.toString('utf-8'))
 
-async function main() {
+async function run() {
   const managementClient = new TunnelManagementHttpClient({ name: 'tunnels-test' }, undefined, tunnelInfo.serviceUri);
   const tunnel: Tunnel = {
     clusterId: tunnelInfo.clusterId,
@@ -22,9 +22,15 @@ async function main() {
     },
   };
 
+  const relayClient = await connectRelayClient(tunnel, managementClient);
+  console.log('> Refresh ports after initial connection...');
+  await relayClient.refreshPorts();
+
   console.log('> Trying to delete existing port to get us to a clean slate...')
   try {
     await managementClient.deleteTunnelPort(tunnel, PORT);
+    console.log('> Refresh ports...');
+    await relayClient.refreshPorts();
     console.log('> Port deleted');
   } catch (error: any) {
     if (error.response && error.response.status === 404) {
@@ -34,8 +40,6 @@ async function main() {
     }
   }
 
-  const relayClient = await connectRelayClient(tunnel, managementClient);
-
   const tunnelPort: TunnelPort = {
     portNumber: PORT,
     protocol: TunnelProtocol.Http,
@@ -43,30 +47,29 @@ async function main() {
 
   console.log('> Creating port...');
   const createdPort1 = await managementClient.createTunnelPort(tunnel, tunnelPort);
+  await wait(1000);
+  console.log('> Refresh ports...');
   await relayClient.refreshPorts();
-  await relayClient.waitForForwardedPort(PORT);
   console.log('> Created port', createdPort1);
 
   console.log('> Deleting port...');
   await managementClient.deleteTunnelPort(tunnel, PORT);
+  await wait(1000);
+  console.log('> Refresh ports...');
   await relayClient.refreshPorts();
   console.log('> Port deleted');
+}
 
-  console.log('> Creating port again...');
-  const createdPort2 = await managementClient.createTunnelPort(tunnel, tunnelPort);
-  await relayClient.refreshPorts();
-  await relayClient.waitForForwardedPort(PORT);
-  console.log('> Created port', createdPort2);
-
-  process.exit(0);
+async function wait(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function connectRelayClient(tunnel: Tunnel, managementClient: TunnelManagementHttpClient) {
-  const relayClient = new TunnelRelayTunnelClient((_level: any, _eventId: number, msg: string, err?: Error) => {
+  const relayClient = new TunnelRelayTunnelClient((_level: any, eventId: number, msg: string, err?: Error) => {
     if (err) {
       console.log(`!> Error: ${msg}`, err);
     } else {
-      console.log(`>> Relay client: ${msg}`);
+      console.log(`>> Relay client ${eventId}: ${msg}`);
     }
   }, managementClient);
   relayClient.acceptLocalConnectionsForForwardedPorts = false;
@@ -87,6 +90,15 @@ async function connectRelayClient(tunnel: Tunnel, managementClient: TunnelManage
   console.log(`> Relay client connected`);
 
   return relayClient;
+}
+
+async function main() {
+  for (let i = 0; i < 5; i++) {
+    console.log(`### RUN ${i} ###`)
+    await run();
+  }
+
+  process.exit(0)
 }
 
 main()
