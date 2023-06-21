@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@microsoft/dev-tunnels-connections@^1.0.7383":
-  version "1.0.7383"
-  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-connections/-/dev-tunnels-connections-1.0.7383.tgz#d7b3b5dee9b961eb38da2ba61a683dc4e825b213"
-  integrity sha512-kKpXijVe2KwbtnISxO+7hs4cx2oDtU9gfdXOQv7Sz8QOBMWbmfkh9yaGUBXvvOkq/3KqW3QFtmQfFRMlRg/aeg==
+"@microsoft/dev-tunnels-connections@^1.0.7393":
+  version "1.0.7393"
+  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-connections/-/dev-tunnels-connections-1.0.7393.tgz#e65387db30edb46ca7f78050f738426f28d4656d"
+  integrity sha512-6s7XvDKi5l9vsUalam4AttuyTyyh+2dmMpZrJcIq7dozFwmgxo33Nratmfvafyx64ETXQPc/37Fqt9vnlJ9XBQ==
   dependencies:
     "@microsoft/dev-tunnels-contracts" "^1.0.0"
     "@microsoft/dev-tunnels-management" "^1.0.0"
-    "@microsoft/dev-tunnels-ssh" "3.11.8"
-    "@microsoft/dev-tunnels-ssh-tcp" "3.11.8"
+    "@microsoft/dev-tunnels-ssh" "3.11.10"
+    "@microsoft/dev-tunnels-ssh-tcp" "3.11.10"
     await-semaphore "^0.1.3"
     buffer "^5.2.1"
     debug "^4.1.1"
@@ -19,7 +19,7 @@
     vscode-jsonrpc "^4.0.0"
     websocket "^1.0.28"
 
-"@microsoft/dev-tunnels-contracts@^1.0.0", "@microsoft/dev-tunnels-contracts@^1.0.7383":
+"@microsoft/dev-tunnels-contracts@^1.0.0":
   version "1.0.7383"
   resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-contracts/-/dev-tunnels-contracts-1.0.7383.tgz#daaf2314bc18aa283164e845801cf1f4e967a1fe"
   integrity sha512-G3pssVuekHGZSM6QBnSCCwtHKiMCzyVZNghlvV6Y7h4Al2GKlZG8ORHfU7h5jSyKTjn0a3yh7YuhDWsOaZqbLA==
@@ -28,7 +28,16 @@
     debug "^4.1.1"
     vscode-jsonrpc "^4.0.0"
 
-"@microsoft/dev-tunnels-management@^1.0.0", "@microsoft/dev-tunnels-management@^1.0.7383":
+"@microsoft/dev-tunnels-contracts@^1.0.7393":
+  version "1.0.7393"
+  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-contracts/-/dev-tunnels-contracts-1.0.7393.tgz#c1242ff1de2b86015fee65e1d4f903991365d0f1"
+  integrity sha512-FvwTOi2rv0EZ8EDoTcEvrV6rVSkqA7nGLxC4mvMJQ6stFQq/DsOxdUJvFdkr+zSO/RZ1JpHBfSSxtH2MBHmvbg==
+  dependencies:
+    buffer "^5.2.1"
+    debug "^4.1.1"
+    vscode-jsonrpc "^4.0.0"
+
+"@microsoft/dev-tunnels-management@^1.0.0":
   version "1.0.7383"
   resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-management/-/dev-tunnels-management-1.0.7383.tgz#66eccf53a31fa95e1bd733369bb86f7eb801f242"
   integrity sha512-NyBdwOg+09o5C3fIf42UAbjWRQeUHwEEuqfftjhqaPHMm83tRaYYWEZsLTwhT+lTi2AoRsEHXFOAfBOdy9EI9w==
@@ -39,17 +48,28 @@
     debug "^4.1.1"
     vscode-jsonrpc "^4.0.0"
 
-"@microsoft/dev-tunnels-ssh-tcp@3.11.8":
-  version "3.11.8"
-  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-ssh-tcp/-/dev-tunnels-ssh-tcp-3.11.8.tgz#e56865d352a58ae157e3bed91cb03c121c78a42d"
-  integrity sha512-ERTR4pPd4fLZjHziStT0V1D/9QC4+mkfax3eTj42fBgVZks9pQIoGy67o8vJGCnaF1/V56z5KIctIriN/wG+gQ==
+"@microsoft/dev-tunnels-management@^1.0.7393":
+  version "1.0.7393"
+  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-management/-/dev-tunnels-management-1.0.7393.tgz#ecc7740dd0821597ded30549c85c9b649297f4ef"
+  integrity sha512-9k7C5bbvvvDiH/KQPNdTwOse4J+UZog8YcxatwRejXt1ZC/8rut8rZrw/DUjbr1u5nFxF51m6cEP/NIzjtxbHA==
+  dependencies:
+    "@microsoft/dev-tunnels-contracts" "^1.0.0"
+    axios "^0.21.1"
+    buffer "^5.2.1"
+    debug "^4.1.1"
+    vscode-jsonrpc "^4.0.0"
+
+"@microsoft/dev-tunnels-ssh-tcp@3.11.10":
+  version "3.11.10"
+  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-ssh-tcp/-/dev-tunnels-ssh-tcp-3.11.10.tgz#b6f98ab21c89d4cd42a617ccfc99abe2ad956b7a"
+  integrity sha512-SNx8Im5OsWRyRKjS7M8Ol+WG/EnlbctiPmZM+aiAhTvv4qcFz1d90ksnW5pdRYwAY4yFv4gxhNiiHqiZ5BFXow==
   dependencies:
     "@microsoft/dev-tunnels-ssh" "~3.11"
 
-"@microsoft/dev-tunnels-ssh@3.11.8", "@microsoft/dev-tunnels-ssh@~3.11":
-  version "3.11.8"
-  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-ssh/-/dev-tunnels-ssh-3.11.8.tgz#2a0e25bca006f1f097a2df63cdf4684d28d1ddca"
-  integrity sha512-71GmOBXy7JjDpL6tkVW4XI1+G4s7SdvMRvYPaXK1MBhBKm8sGLXqBb2xoOpjbY9/Y/gUzADEuwB7OyGlEAyWYw==
+"@microsoft/dev-tunnels-ssh@3.11.10", "@microsoft/dev-tunnels-ssh@~3.11":
+  version "3.11.10"
+  resolved "https://registry.yarnpkg.com/@microsoft/dev-tunnels-ssh/-/dev-tunnels-ssh-3.11.10.tgz#57e93ce34ccdc83a7aa9bc79d86c267abb875a2d"
+  integrity sha512-IoaFxDCnXrUD78wySUmlb5JIeqMPUsJc4EqBR+0EbbPqnIoKCaYChyOXQD76hEkusMrJwN+26Q3DJRa1qmraJA==
   dependencies:
     buffer "^5.2.1"
     debug "^4.1.1"
