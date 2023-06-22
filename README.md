@@ -5,6 +5,8 @@ Bug: calling `refreshPorts` can hang.
 To reproduce:
 
 1. Create a codespace from this repository
-1. `yarn && gh api /user/codespaces/$CODESPACE_NAME?internal=1 | jq .connection.tunnelProperties > tunnel.json`
-1. `yarn start`
-1. This seems to be a race, you may need to run it multiple times. Once a codespace is in a bad state, it seems to stay in a bad state until it's restarted.
+2. Update the GitHub token to be a token from devtunnels: https://github.com/joshaber/tunnels-test/blob/aed961156cd89451b5bc97e15154bda6a04a210d/host/Program.cs#L19
+3. `cd host && dotnet run`
+4. Copy `host/tunnel.json` to the root
+5. `yarn start`. This will run just fine and exit.
+7. `yarn start` again. This will hang.
